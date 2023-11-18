@@ -39,7 +39,7 @@ const getPosHandler = (pos) => {
   circle = L.circle([lat, long], {radius: accuracy})
 
   const featureGroup = L.featureGroup([marker, circle]).addTo(map)
-  map.fitBounds(featureGroup.getBounds())
+  // map.fitBounds(featureGroup.getBounds())
 }
 
 if (!navigator.geolocation) {
