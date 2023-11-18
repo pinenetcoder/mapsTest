@@ -1,55 +1,52 @@
-// Note: This example requires that you consent to location sharing when
-// prompted by your browser. If you see the error "The Geolocation service
-// failed.", it means you probably did not give permission for the browser to
-// locate you.
-let map, infoWindow;
+const map = L.map('map').setView([55.604290, 26.431855], 30);
 
-function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 6,
-  });
-  infoWindow = new google.maps.InfoWindow();
+const osm =  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
 
-  const locationButton = document.createElement("button");
+const googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x,h&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+});
 
-  locationButton.textContent = "Pan to Current Location";
-  locationButton.classList.add("custom-map-control-button");
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-  locationButton.addEventListener("click", () => {
-    // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
+const myIcon = L.icon({
+  iconUrl: './img/loc_icon1.png',
+  iconSize: [40,55]
+})
 
-          infoWindow.setPosition(pos);
-          infoWindow.setContent("Location found.");
-          infoWindow.open(map);
-          map.setCenter(pos);
-        },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
-        },
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
-  });
+
+// const myFirstMarker = L.marker([55.604290, 26.431855], {icon: myIcon})
+
+osm.addTo(map)
+// myFirstMarker.addTo(map)
+
+  let marker = undefined
+  let circle = undefined
+
+const getPosHandler = (pos) => {
+  const lat = pos.coords.latitude;
+  const long = pos.coords.longitude;
+  const accuracy = pos.coords.accuracy;
+  
+  if (!!marker) {
+    map.removeLayer(marker)
+  }
+  if(circle) {
+    map.removeLayer(circle)
+  }
+  
+  marker = L.marker([lat, long], {icon: myIcon})
+  circle = L.circle([lat, long], {radius: accuracy})
+
+  const featureGroup = L.featureGroup([marker, circle]).addTo(map)
+  map.fitBounds(featureGroup.getBounds())
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(
-    browserHasGeolocation
-      ? "Error: The Geolocation service failed."
-      : "Error: Your browser doesn't support geolocation.",
-  );
-  infoWindow.open(map);
+if (!navigator.geolocation) {
+  console.log('There is no GEO in your Xiaomi');
+} else {
+  setInterval(() => {
+    navigator.geolocation.getCurrentPosition(getPosHandler)
+  }, 2000)
 }
 
-window.initMap = initMap;
