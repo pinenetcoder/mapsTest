@@ -19,7 +19,7 @@ var lc = L.control.locate()
 
 // const myFirstMarker = L.marker([55.604290, 26.431855], {icon: myIcon})
 
-googleStreets.addTo(map)
+osm.addTo(map)
 lc.addTo(map)
 lc.start()
 // myFirstMarker.addTo(map)
