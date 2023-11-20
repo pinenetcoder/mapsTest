@@ -24,8 +24,8 @@ lc.addTo(map)
 lc.start()
 // myFirstMarker.addTo(map)
 
-  let marker = undefined
-  let circle = undefined
+// let marker = undefined
+// let circle = undefined
 
 
 
