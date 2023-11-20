@@ -1,4 +1,4 @@
-const map = L.map('map').setView([55.604290, 26.431855], 30);
+const map = L.map('map').setView([55.604290, 26.431855], 100);
 
 const osm =  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -19,9 +19,9 @@ var lc = L.control.locate()
 
 // const myFirstMarker = L.marker([55.604290, 26.431855], {icon: myIcon})
 
-osm.addTo(map)
-// lc.addTo(map)
-// lc.start()
+googleStreets.addTo(map)
+lc.addTo(map)
+lc.start()
 // myFirstMarker.addTo(map)
 
 // let marker = undefined
