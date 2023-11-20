@@ -20,8 +20,8 @@ var lc = L.control.locate()
 // const myFirstMarker = L.marker([55.604290, 26.431855], {icon: myIcon})
 
 osm.addTo(map)
-lc.addTo(map)
-lc.start()
+// lc.addTo(map)
+// lc.start()
 // myFirstMarker.addTo(map)
 
 // let marker = undefined
